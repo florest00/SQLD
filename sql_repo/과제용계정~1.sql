@@ -1,0 +1,99 @@
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+ORDER BY ANIMAL_ID;
+
+-- 나이 정보가 없는 회원 수 구하기
+
+SELECT USER_ID(*) AS USERS
+FROM USER_INFO
+WHERE AGE IS NULL
+;
+
+-- 강원도에 위치한 생산공장 목록 출력하기
+
+SELECT FACTORY_ID
+, FACTORY_NAME
+, ADDRESS
+FROM FOOD_FACTORY
+ORDER BY FACTORY_ID ASC;
+
+-- 조건에 맞는 회원수 구하기
+
+SELECT
+    COUNT(*) AS USERS
+FROM USER_INFO
+WHERE AGE BETWEEN 20 AND 29
+AND JOINED LIKE 2021
+;
+
+-- 흉부외과 또는 일반외과 의사 목록 출력
+
+SELECT DR_NAME, DR_ID, MCDP_CD, TO_CHAR(HIRE_YMD, 'YYYY-MM-DD') as HIRE_YMD
+FROM DOCTOR
+WHERE MCDEP_CD = 'CS' OR MCDP_CD='GS'
+ORDER BY HIRE_YMD DESC, DR_NAME;
+-- 고용일자가 같다면 이름을 기준으로 오름차순 정렬
+
+
+-- 어린 동물 찾기
+SELECT ANIMAL_ID, NAME, INTAKE_CONDITION
+FROM ANIMAL_INS
+WHERE INTAKE_CONDITION <> 'Aged'
+ORDER BY ANIMAL_ID
+;
+
+-- 역순 정렬하기
+SELECT NAME, DATETIME
+FROM ANIMAL_INS
+ORDER BY ANIMAL_ID DESC
+;
+
+-- 상위 n개 레코드
+SELECT NAME
+FROM ANIMAL_INS
+WHERE DATETIME
+; -- 상위를 가리는? sql문은 배운적 없으니 보류
+
+-- 여러 기준으로 정렬하기
+SELECT ANIMAL_ID
+       , NAME
+       , DATETIME
+FROM ANIMAL_INS
+ORDER BY NAME, DATETIME DESC --이름이 같은 동물 중에서는 보호를 나중에 시작한 동물
+;
+
+-- 이름이 있는 동물의 아이디
+SELECT ANIMAL_ID
+FROM ANIMAL_INS
+HAVING NAME IS NOT NULL -- 이름이 있는 동물의 ID 
+ORDER BY ANIMAL_ID ASC
+;
+
+
+-- 12세 이하인 "여자 환자" 목록 출력
+ SELECT PT_NAME, PT_NO, GEND_CD, AGE, NVL(TLNO, NONE)-- 전화번호가 없는 경우 NONE으로 출력할 것
+ FROM PATIENT
+ WHERE AGE <= 12
+ AND GEND_CD = 'W' --나이가 같다면 환자이름 순
+ ORDER BY AGE DESC, PT_NAME ASC 
+ ;
+ 
+-- 나이가 같다면 환자이름 순.. 이걸 어떻게 작성해야..?
+--> 얜 상관 x
+
+
+
+-- 인기있는 아이스크림
+
+SELECT FLAVOR
+FROM FIRST_HALF
+ORDER BY TOTAL_ORDER DESC, SHIPMENT_ID ASC
+;
+
+-- 조건에 맞는 도서 리스트 출력
+SELECT BOOK_ID, PUBLISHED_DATE
+FROM BOOK
+WHERE CATEGORY = '인문'
+ORDER BY PUBLISHED_DATE ASC
+;
+

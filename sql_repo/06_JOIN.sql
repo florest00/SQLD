@@ -28,18 +28,27 @@
 */
 
 -- 각 사원들의 사번, 사원명, 부서 코드, 부서명을 조회
-SELECT EMP_ID, EMP_NAME, DEPT_CODE
-FROM EMPLOYEE
-;
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    DEPT_CODE
+FROM
+    EMPLOYEE;
 
-SELECT *
-FROM DEPARTMENT
-; -- 부서 테이블 정보
+SELECT
+    *
+FROM
+    DEPARTMENT; -- 부서 테이블 정보
 
-SELECT EMP_ID, EMP_NAME, DEPT_CODE, DEPT_TITLE
-FROM EMPLOYEE E --테이블명 그대로 써서 빨간줄 뜨는듯 -- 테이블명에도 별칭 달 수 있음
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID -- EMPLOYEE랑 부서테이블 합칠거다-- 사원.부서코드 = 부서.부서아이디 일치하는 걸 찾아서 연결해라
-; -- ON : 연결기준, 어떻게 연결할건지 적으면 됨
+SELECT
+    EMP_ID,
+    EMP_NAME,
+    DEPT_CODE,
+    DEPT_TITLE
+FROM
+         EMPLOYEE E --테이블명 그대로 써서 빨간줄 뜨는듯 -- 테이블명에도 별칭 달 수 있음
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID -- EMPLOYEE랑 부서테이블 합칠거다-- 사원.부서코드 = 부서.부서아이디 일치하는 걸 찾아서 연결해라
+    ; -- ON : 연결기준, 어떻게 연결할건지 적으면 됨
 
 /*
 SELECT *
@@ -50,10 +59,14 @@ JOIN DEPARTMENT D ON EMPLOYEE.DEPT_CODE = DEPARTMENT.DEPT_ID -- EMPLOYEE랑 부�
 
 -- 각 사원들의 사번, 사원명, 직급 코드 , 직급명을 조회
 
-SELECT E.EMP_ID, E.EMP_NAME, E.JOB_CODE, J.JOB_NAME -- JOB_CODE => 칼럼의 정의가 애매해서 나타나는 에러.. JOB_CODE가 뭔데?함
-FROM EMPLOYEE E -- 컬럼 별칭 안달아주면 에러남
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
-;
+SELECT
+    E.EMP_ID,
+    E.EMP_NAME,
+    E.JOB_CODE,
+    J.JOB_NAME -- JOB_CODE => 칼럼의 정의가 애매해서 나타나는 에러.. JOB_CODE가 뭔데?함
+FROM
+         EMPLOYEE E -- 컬럼 별칭 안달아주면 에러남
+    JOIN JOB J ON E.JOB_CODE = J.JOB_CODE;
 
 /*
 
@@ -67,18 +80,21 @@ FROM EMPLOYEE E
 NATURAL JOIN JOB
 ;
 
-
 */
 
 -- 컬럼명 겹칠 때
 
 -- EMPLOYEE 테이블과 JOB 테이블을 조인하여 직급이 대리인 사원의 사번, 사원명, 직급명, 급여를 조회
-SELECT E.EMP_NO, E.EMP_NAME, J.JOB_NAME, E.SALARY
-FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
-WHERE J.JOB_NAME = '대리'
-; -- 테이블명을 구분하는 이유는 서로 다른 테이블의 똑같은 컬럼명이 있으면 에러남
-
+SELECT
+    E.EMP_NO,
+    E.EMP_NAME,
+    J.JOB_NAME,
+    E.SALARY
+FROM
+         EMPLOYEE E
+    JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+WHERE
+    J.JOB_NAME = '대리'; -- 테이블명을 구분하는 이유는 서로 다른 테이블의 똑같은 컬럼명이 있으면 에러남
 
 /*
     2. 다중 JOIN
@@ -86,12 +102,15 @@ WHERE J.JOB_NAME = '대리'
 */
 
 -- EMPLOYEE, DEPARTMENT, LOCATION 테이블을 다중 JOIN 하여 사번, 사원명, 부서명, 지역명 조회
-SELECT E.EMP_NO, E.EMP_NAME, D.DEPT_TITLE, L.LOCAL_NAME
-FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-;
-
+SELECT
+    E.EMP_NO,
+    E.EMP_NAME,
+    D.DEPT_TITLE,
+    L.LOCAL_NAME
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE;
 
 /*
     3. 외부 조인 (OUTER JOIN)
@@ -103,13 +122,17 @@ JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
 --> 값이 일치하는 것끼리 연결해주겠다
 
 -- 사원명, 부서코드, 부서명 조회
-SELECT E.EMP_NAME, E.DEPT_CODE, D.DEPT_ID, D.DEPT_TITLE
-FROM EMPLOYEE E
-FULL OUTER JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID -- OUTER : 일치하지 않아도 살리겠다
-;
+SELECT
+    E.EMP_NAME,
+    E.DEPT_CODE,
+    D.DEPT_ID,
+    D.DEPT_TITLE
+FROM
+    EMPLOYEE   E
+    FULL OUTER JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID -- OUTER : 일치하지 않아도 살리겠다
+    ;
 
 -- OUTER 조인은 사실 안 써도 된다? LEFT/RIGHT/FULL -> 전부 OUTER JOIN이라서 OUTER없이 LEFT JOIN/ RIGHT JOIN/ FULL JOIN 하면 알아먹음
-
 
 /*
     4. 카테시안곱(CARTESIAN PRODUCT) / 교차 조인(CROSS JOIN)
@@ -117,13 +140,13 @@ FULL OUTER JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID -- OUTER : 일치하지 
         테이블의 행들이 모두 곱해진 행들의 조합이 출력 -> 과부화의 위험
 */
 
-SELECT *
-FROM EMPLOYEE E
-CROSS JOIN DEPARTMENT D
-;
+SELECT
+    *
+FROM
+         EMPLOYEE E
+    CROSS JOIN DEPARTMENT D;
 
 ------------------ equal join : 값이 일치할 때 JOIN 처리하는 -------------
-
 
 /*
     5. 비등가 조인(NON EQUAL JOIN)
@@ -134,28 +157,37 @@ CROSS JOIN DEPARTMENT D
 */
 
 --사원이름, 급여조회
-SELECT EMP_NAME, SALARY, SAL_LEVEL
-FROM EMPLOYEE E
-JOIN SAL_GRADE S ON SALARY BETWEEN MIN_SAL AND MAX_SAL -- 등호 말고도 범위로도 JOIN 가능
-ORDER BY SALARY DESC
-;
+SELECT
+    EMP_NAME,
+    SALARY,
+    SAL_LEVEL
+FROM
+         EMPLOYEE E
+    JOIN SAL_GRADE S ON SALARY BETWEEN MIN_SAL AND MAX_SAL -- 등호 말고도 범위로도 JOIN 가능
+ORDER BY
+    SALARY DESC;
 
 --1, 4, 5, 6 : 특, 고, 중, 초
 -- CASE WHEN THEN / DECODE
 
-SELECT EMP_NAME
-    , SALARY
-    , CASE SAL_LEVEL
-        WHEN 'S1' THEN '특급'
-        WHEN 'S4' THEN '고급'
-        WHEN 'S5' THEN '중급'
-        WHEN 'S6' THEN '초급'
-        END AS 등급
-FROM EMPLOYEE E
-JOIN SAL_GRADE S ON SALARY BETWEEN MIN_SAL AND MAX_SAL
-ORDER BY SALARY DESC
-;
-
+SELECT
+    EMP_NAME,
+    SALARY,
+    CASE SAL_LEVEL
+        WHEN 'S1' THEN
+            '특급'
+        WHEN 'S4' THEN
+            '고급'
+        WHEN 'S5' THEN
+            '중급'
+        WHEN 'S6' THEN
+            '초급'
+    END AS 등급
+FROM
+         EMPLOYEE E
+    JOIN SAL_GRADE S ON SALARY BETWEEN MIN_SAL AND MAX_SAL
+ORDER BY
+    SALARY DESC;
 
 --SELECT EMP_NAME
 --    , SALARY
@@ -168,7 +200,6 @@ ORDER BY SALARY DESC
 --ORDER BY SALARY DESC
 --;
     
-
 
 
 --SELECT 
@@ -186,7 +217,6 @@ ORDER BY SALARY DESC
 --FROM EMPLOYEE
 --;
 
-
 /*
     6. 자체 조인 (SELF JOIN)
         같은 테이블을 다시 한번 조인하는 경우에 사용한다.
@@ -194,191 +224,488 @@ ORDER BY SALARY DESC
 
 -- EMPLOYEE 테이블을 SELF JOIN 하여 사번, 사원명, 부서 코드, 사수 사번, 사수 이름 조회
 SELECT
-    EMP_NO
-    , A.EMP_NAME
-    , A.DEPT_CODE
-    , B.EMP_ID --사수 아이디 self join
-    , B.EMP_NAME -- 사수 이름
-FROM EMPLOYEE A
-JOIN EMPLOYEE B ON A.MANAGER_ID = B.EMP_ID
-;
+    EMP_NO,
+    A.EMP_NAME,
+    A.DEPT_CODE,
+    B.EMP_ID --사수 아이디 self join
+    ,
+    B.EMP_NAME -- 사수 이름
+FROM
+         EMPLOYEE A
+    JOIN EMPLOYEE B ON A.MANAGER_ID = B.EMP_ID;
 
 -- 과제 25-05-13 (내일)
 
 ---------------- 실습 문제 ----------------
+
 -- 1. DEPARTMENT 테이블과 LOCATION 테이블의 조인하여 부서 코드, 부서명, 지역 코드, 지역명을 조회
-SELECT D.DEPT_ID, D.DEPT_TITLE, D.LOCATION_ID, L.LOCAL_NAME
+
+SELECT
+    D.DEPT_ID,
+    D.DEPT_TITLE,
+    D.LOCATION_ID,
+    L.LOCAL_NAME
+FROM
+         DEPARTMENT D
+    JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE;
+
+
+-- ANSI 구문 (정답)
+SELECT D.DEPT_ID, D.DEPT_TITLE, D.LOCATION_ID, L.NATIONAL_CODE
 FROM DEPARTMENT D
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE;
+JOIN LOCATION L ON(D.LOCATION_ID = L.LOCAL_CODE);
+
+-- 결과동일
 
 -- 2. EMPLOYEE 테이블과 DEPARTMENT 테이블을 조인해서 보너스를 받는 사원들의 사번, 사원명, 보너스, 부서명을 조회
-SELECT E.EMP_NO, E.EMP_NAME, E.BONUS, D.DEPT_TITLE
+
+SELECT
+    E.EMP_ID, -- EMP_NO는 주민번호.. 사번은 EMP_ID
+    E.EMP_NAME,
+    E.BONUS,
+    D.DEPT_TITLE
+FROM
+         EMPLOYEE E
+--    JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE;
+      JOIN DEPARTMENT D ON  E.DEPT_CODE =  D.DEPT_ID
+      WHERE BONUS IS NOT NULL; -- 결과가 달랐던 이유 : "보너스를 받는 사원" 이라는 조건이 빠짐
+    
+-- ANSI 구문 (정답)
+SELECT E.EMP_ID, E.EMP_NAME, E.BONUS, D.DEPT_TITLE
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE;
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+WHERE BONUS IS NOT NULL;
+
+--결과다름 (고침)
+
 
 -- 3. EMPLOYEE 테이블과 DEPARTMENT 테이블을 조인해서 인사관리부가 아닌 사원들의 사원명, 부서명, 급여를 조회
+
+SELECT
+    E.EMP_NAME,
+    D.DEPT_TITLE,
+    E.SALARY
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
+WHERE
+    D.DEPT_TITLE <> '인사관리부'; -- 인사관리부가 아닌 사원
+
+-- ANSI 구문 (정답)
 SELECT E.EMP_NAME, D.DEPT_TITLE, E.SALARY
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
-WHERE D.DEPT_TITLE <> '인사관리부';
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID) -- 순서의 기준은 뭘까?
+WHERE D.DEPT_ID != 'D1';
+
+-- 결과동일
 
 
 -- 4. EMPLOYEE 테이블, DEPARTMENT 테이블, LOCATION 테이블의 조인해서 사번, 사원명, 부서명, 지역명 조회
-SELECT E.EMP_NO, E.EMP_NAME, E.DEPT_CODE, L.LOCAL_NAME
+
+SELECT
+    E.EMP_ID, -- EMP_NO는 주민번호 
+    E.EMP_NAME,
+    E.DEPT_CODE,
+    L.LOCAL_NAME
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
+    JOIN LOCATION   L ON L.LOCAL_CODE = D.LOCATION_ID;
+
+
+-- ANSI 구문 (정답)
+SELECT E.EMP_ID, E.EMP_NAME, D.DEPT_TITLE, L.LOCAL_NAME
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
-JOIN LOCATION L ON L.LOCAL_CODE = D.LOCATION_ID;
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+JOIN LOCATION L ON( D.LOCATION_ID = L.LOCAL_CODE);
+
+-- 결과동일.. 근데 EMP_ID랑 EMP_NO랑 헷갈림
+
 
 -- 5. 사번, 사원명, 부서명, 지역명, 국가명 조회
-SELECT E.EMP_NO, E.EMP_NAME, L.LOCAL_NAME, L.NATIONAL_CODE
+
+SELECT
+    E.EMP_ID,
+    E.EMP_NAME,
+    L.LOCAL_NAME,
+    L.NATIONAL_CODE
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
+    JOIN LOCATION   L ON L.LOCAL_CODE = D.LOCATION_ID;
+    
+    
+    -- ANSI 구문
+SELECT E.EMP_ID, E.EMP_NAME, D.DEPT_TITLE, L.LOCAL_NAME, N.NATIONAL_NAME
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON D.DEPT_ID = E.DEPT_CODE
-JOIN LOCATION L ON L.LOCAL_CODE = D.LOCATION_ID;
+INNER JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+INNER JOIN LOCATION L ON(D.LOCATION_ID = L.LOCAL_CODE)
+INNER JOIN NATIONAL N ON(L.NATIONAL_CODE = N.NATIONAL_CODE);
+
 
 -- 6. 사번, 사원명, 부서명, 지역명, 국가명, 급여 등급 조회 (NON EQUAL JOIN 후에 실습 진행)
-SELECT E.EMP_NO, E.EMP_NAME, D.DEPT_TITLE, L.LOCAL_NAME, N.NATIONAL_NAME, E.SALARY,
+
+SELECT
+    E.EMP_ID,
+    E.EMP_NAME,
+    D.DEPT_TITLE,
+    L.LOCAL_NAME,
+    N.NATIONAL_NAME,
+    E.SALARY,
     CASE S.SAL_LEVEL
-        WHEN 'S1' THEN '특급'
-        WHEN 'S4' THEN '고급'
-        WHEN 'S5' THEN '중급'
-        WHEN 'S6' THEN '초급'
-        ELSE '기타'
+        WHEN 'S1' THEN
+            '특급'
+        WHEN 'S4' THEN
+            '고급'
+        WHEN 'S5' THEN
+            '중급'
+        WHEN 'S6' THEN
+            '초급'
+        ELSE
+            '기타'
     END AS 등급
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE
+    JOIN NATIONAL   N ON L.NATIONAL_CODE = N.NATIONAL_CODE
+    JOIN SAL_GRADE  S ON E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL
+ORDER BY
+    E.SALARY DESC;
+    
+    
+    -- ANSI 구문
+SELECT E.EMP_ID AS "사번", 
+       E.EMP_NAME AS "사원명", 
+       D.DEPT_TITLE AS "부서명",
+       L.LOCAL_NAME AS "근무지역명",
+       N.NATIONAL_NAME AS "근무국가명",
+       S.SAL_LEVEL AS "급여등급"
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-JOIN NATIONAL N ON L.NATIONAL_CODE = N.NATIONAL_CODE
-JOIN SAL_GRADE S ON E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL
-ORDER BY E.SALARY DESC;
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+JOIN LOCATION L ON(D.LOCATION_ID = L.LOCAL_CODE)
+JOIN NATIONAL N ON(L.NATIONAL_CODE = N.NATIONAL_CODE)
+JOIN SAL_GRADE S ON(E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL);
+    
+    
+
 
 ------------------------- 종합 실습 문제 -------------------------
 
+
 -- 1. 직급이 대리이면서 ASIA 지역에서 근무하는 직원들의 사번, 사원명, 직급명, 부서명, 근무지역, 급여를 조회하세요.
-SELECT E.EMP_NO, E.EMP_NAME, J.JOB_NAME, D.DEPT_TITLE, L.LOCAL_NAME, E.SALARY
+
+SELECT
+    E.EMP_ID,
+    E.EMP_NAME,
+    J.JOB_NAME,
+    D.DEPT_TITLE,
+    L.LOCAL_NAME,
+    E.SALARY
+FROM
+         EMPLOYEE E
+    JOIN JOB        J ON E.JOB_CODE = J.JOB_CODE --> 일치하는 걸 연결해주겠다         잘못쓴거 J.JOB_NAME = E.JOB_CODE
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE
+--    JOIN NATIONAL   N ON L.NATIONAL_CODE = N.NATIONAL_CODE
+WHERE
+        J.JOB_NAME = '대리'
+    AND L.LOCAL_NAME LIKE 'ASIA%'; -- 특정패턴일땐 대소비교 연산자를 사용할 게 아니라 LIKE를 사용해야함
+    
+    
+    -- ANSI 구문 (정답)
+SELECT E.EMP_ID AS "사번",
+       E.EMP_NAME AS "사원명", 
+       J.JOB_NAME AS "직급명", 
+       D.DEPT_TITLE AS "부서명", 
+       L.LOCAL_NAME AS "근무지역", 
+       E.SALARY AS "급여"
 FROM EMPLOYEE E
-JOIN JOB J ON J.JOB_NAME = E.JOB_CODE
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-JOIN NATIONAL N ON L.NATIONAL_CODE = N.NATIONAL_CODE
-WHERE J.JOB_NAME = '대리' AND L.LOCAL_NAME = 'ASIA';
+JOIN JOB J ON (E.JOB_CODE = J.JOB_CODE)
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+JOIN LOCATION L ON(D.LOCATION_ID = L.LOCAL_CODE)
+WHERE J.JOB_NAME = '대리' 
+  AND L.LOCAL_NAME LIKE 'ASIA%';
+  
+  -- 결과 다름 (고침)
+
 
 -- 2. 70년대생 이면서 여자이고, 성이 전 씨인 직원들의 사원명, 주민번호, 부서명, 직급명을 조회하세요.
-SELECT E.EMP_NAME, E.EMP_NO, D.DEPT_TITLE, J.JOB_NAME
-FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN JOB J ON J.JOB_CODE = E.JOB_CODE
-WHERE SUBSTR(E.EMP_NO, 1, 2) BETWEEN '70' AND '79'
-AND SUBSTR(E.EMP_NO, 8, 1) IN ('2', '4')
-AND E.EMP_NAME LIKE '전%';
 
+SELECT
+    E.EMP_NAME,
+    E.EMP_NO,
+    D.DEPT_TITLE,
+    J.JOB_NAME
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN JOB        J ON J.JOB_CODE = E.JOB_CODE
+WHERE
+    SUBSTR(E.EMP_NO, 1, 2) BETWEEN '70' AND '79'
+    AND SUBSTR(E.EMP_NO, 8, 1) IN ( '2', '4' )
+    AND E.EMP_NAME LIKE '전%';
+    
+-- ANSI 구문 (정답)
+SELECT E.EMP_NAME AS "사원명",
+       E.EMP_NO AS "주민번호",
+       D.DEPT_TITLE AS "부서명",
+       J.JOB_NAME AS "직급명"
+FROM EMPLOYEE E
+JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
+JOIN JOB J ON (E.JOB_CODE = J.JOB_CODE)
+--WHERE SUBSTR(E.EMP_NO, 1, 1) = '7'
+WHERE E.EMP_NO LIKE '7%'
+  AND SUBSTR(E.EMP_NO, 8, 1) = '2'
+  AND E.EMP_NAME LIKE '전%';
+
+-- 결과동일
 
 -- 3. 보너스를 받는 직원들의 사원명, 보너스, 연봉, 부서명, 근무지역을 조회하세요.
-SELECT 
-    E.EMP_NAME
-    , E.BONUS
-    , (E.SALARY + NVL(E.BONUS, 0)) * 12 AS "연봉"
-    , D.DEPT_TITLE
-    , L.LOCAL_NAME
-FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-WHERE E.BONUS IS NOT NULL AND E.BONUS > 0;
 
+SELECT
+    E.EMP_NAME,
+    E.BONUS,
+    ( E.SALARY + NVL(E.BONUS, 0) ) * 12 연봉,
+    D.DEPT_TITLE,
+    L.LOCAL_NAME
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE
+WHERE
+    E.BONUS IS NOT NULL
+    AND E.BONUS > 0;
+
+-- ANSI 구문 (정답)
+SELECT E.EMP_NAME AS "사원명",
+       NVL(E.BONUS, 0) AS "보너스",
+       TO_CHAR(E.SALARY * 12, '99,999,999') AS "연봉", -- 헐 왜 99,....?
+       D.DEPT_TITLE AS "부서명",
+       L.LOCAL_NAME AS "근무지역"
+FROM EMPLOYEE E
+LEFT OUTER JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
+LEFT OUTER JOIN LOCATION L ON (D.LOCATION_ID = L.LOCAL_CODE);
+
+-- 결과다름
 
 -- 4. 한국과 일본에서 근무하는 직원들의 사원명, 부서명, 근무지역, 근무 국가를 조회하세요.
-SELECT 
-    E.EMP_NAME
-    , D.DEPT_TITLE
-    , L.LOCAL_NAME
-    , N.NATIONAL_NAME
+
+SELECT
+    E.EMP_NAME,
+    D.DEPT_TITLE,
+    L.LOCAL_NAME,
+    N.NATIONAL_NAME
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE
+    JOIN NATIONAL   N ON L.NATIONAL_CODE = N.NATIONAL_CODE
+WHERE
+    N.NATIONAL_NAME IN ( '한국', '일본' );
+    
+    -- ANSI 구문 (정답)
+SELECT E.EMP_NAME AS "사원명", 
+       D.DEPT_TITLE AS "부서명", 
+       L.LOCAL_NAME AS "근무지역", 
+       N.NATIONAL_NAME AS "근무국가"
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-JOIN NATIONAL N ON L.NATIONAL_CODE = N.NATIONAL_CODE
+JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
+JOIN LOCATION L ON (D.LOCATION_ID = L.LOCAL_CODE)
+JOIN NATIONAL N ON (L.NATIONAL_CODE = N.NATIONAL_CODE)
 WHERE N.NATIONAL_NAME IN ('한국', '일본');
 
+-- 결과 동일
 
 -- 5. 각 부서별 평균 급여를 조회하여 부서명, 평균 급여(정수 처리)를 조회하세요.
-SELECT 
-    D.DEPT_TITLE AS "부서명"
-    , FLOOR(AVG(E.SALARY)) AS "평균급여"
+
+SELECT
+    D.DEPT_TITLE         부서명,
+    FLOOR(AVG(E.SALARY)) 평균급여
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+GROUP BY
+    D.DEPT_TITLE;
+    
+    -- ANSI 구문 (정답)
+SELECT NVL(D.DEPT_TITLE, '부서없음') AS "부서명", 
+       TO_CHAR(ROUND(AVG(NVL(SALARY, 0))), '99,999,999') AS "급여평균"
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-GROUP BY D.DEPT_TITLE;
+LEFT JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
+GROUP BY D.DEPT_TITLE
+ORDER BY D.DEPT_TITLE;
+
+-- 결과다름
+
 
 
 -- 6. 각 부서별 총 급여의 합이 1000만원 이상인 부서명, 급여의 합을 조회하시오.
-SELECT 
-    D.DEPT_TITLE AS "부서명"
-    , SUM(E.SALARY) AS "총급여"
+
+SELECT
+    D.DEPT_TITLE  부서명,
+    SUM(E.SALARY) 총급여
+FROM
+         EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+GROUP BY
+    D.DEPT_TITLE
+HAVING
+    SUM(E.SALARY) >= 10000000;
+    
+    
+-- ANSI 구문 (정답)
+SELECT D.DEPT_TITLE AS "부서명", 
+       TO_CHAR(SUM(SALARY), '99,999,999') AS "급여의 합"
 FROM EMPLOYEE E
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+JOIN DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
 GROUP BY D.DEPT_TITLE
-HAVING SUM(E.SALARY) >= 10000000;
+HAVING SUM(SALARY) >= 10000000
+ORDER BY D.DEPT_TITLE;
+
+-- 결과 거의 동일하긴 한데 포멧이 좀 다름
 
 
 -- 7. 사번, 사원명, 직급명, 급여 등급, 구분을 조회 (NON EQUAL JOIN 후에 실습 진행)
-SELECT 
-    E.EMP_NO 사번
-    , E.EMP_NAME 사원명
-    , J.JOB_NAME 직급명
-    , S.SAL_LEVEL 급여등급
-    , CASE S.SAL_LEVEL
-        WHEN 'S1' THEN '특급'
-        WHEN 'S2' THEN '고급'
-        WHEN 'S3' THEN '중급'
-        WHEN 'S4' THEN '초급'
-        ELSE '기타'
-    END 구분
-FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
-JOIN SAL_GRADE S ON E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL
-ORDER BY E.EMP_NO;
 
+SELECT
+    E.EMP_ID    사번,
+    E.EMP_NAME  사원명,
+    J.JOB_NAME  직급명,
+    S.SAL_LEVEL 급여등급,
+    CASE S.SAL_LEVEL
+        WHEN 'S1' THEN
+            '특급'
+        WHEN 'S2' THEN
+            '고급'
+        WHEN 'S3' THEN
+            '중급'
+        WHEN 'S4' THEN
+            '초급'
+        ELSE
+            '기타'
+    END         구분
+FROM
+         EMPLOYEE E
+    JOIN JOB       J ON E.JOB_CODE = J.JOB_CODE
+    JOIN SAL_GRADE S ON E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL
+ORDER BY
+    E.EMP_ID;
+
+-- ANSI 구문 (정답)
+SELECT E.EMP_ID AS "사번", 
+       E.EMP_NAME AS "사원명", 
+       J.JOB_NAME AS "직급명",
+       S.SAL_LEVEL AS "급여 등급",
+       CASE 
+            WHEN S.SAL_LEVEL IN ('S1', 'S2') THEN '고급' 
+            WHEN S.SAL_LEVEL IN ('S3', 'S4') THEN '중급'
+            WHEN S.SAL_LEVEL IN ('S5', 'S6') THEN '초급'
+       END AS "구분"
+FROM EMPLOYEE E
+JOIN JOB J ON (E.JOB_CODE = J.JOB_CODE)
+JOIN SAL_GRADE S ON(E.SALARY BETWEEN S.MIN_SAL AND S.MAX_SAL);
 
 -- 8. 보너스를 받지 않는 직원들 중 직급 코드가 J4 또는 J7인 직원들의 사원명, 직급명, 급여를 조회하시오.
-SELECT 
-    E.EMP_NAME 사원
-    , J.JOB_NAME 직급
-    , E.SALARY 급여
+
+SELECT
+    E.EMP_NAME 사원,
+    J.JOB_NAME 직급,
+    E.SALARY   급여
+FROM
+         EMPLOYEE E
+    JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+WHERE
+    E.BONUS IS NULL
+    AND E.JOB_CODE IN ( 'J4', 'J7' );
+    
+    -- ANSI 구문 (정답)
+SELECT E.EMP_NAME AS "사원명", 
+       J.JOB_NAME AS "직급명", 
+       E.SALARY AS "급여"
 FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+JOIN JOB J ON(E.JOB_CODE = J.JOB_CODE)
 WHERE E.BONUS IS NULL
   AND E.JOB_CODE IN ('J4', 'J7');
 
 
--- 9. 부서가 있는 직원들의 사원명, 직급명, 부서명, 근무 지역을 조회하시오.
-SELECT 
-    E.EMP_NAME 사원명
-    , J.JOB_NAME 직급명
-    , D.DEPT_TITLE 부서명
-    , L.LOCAL_NAME 근무지역
-FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-JOIN LOCATION L ON D.LOCATION_ID = L.LOCAL_CODE
-WHERE E.DEPT_CODE IS NOT NULL;
 
+-- 9. 부서가 있는 직원들의 사원명, 직급명, 부서명, 근무 지역을 조회하시오.
+
+SELECT
+    E.EMP_NAME   사원명,
+    J.JOB_NAME   직급명,
+    D.DEPT_TITLE 부서명,
+    L.LOCAL_NAME 근무지역
+FROM
+         EMPLOYEE E
+    JOIN JOB        J ON E.JOB_CODE = J.JOB_CODE
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+    JOIN LOCATION   L ON D.LOCATION_ID = L.LOCAL_CODE
+WHERE
+    E.DEPT_CODE IS NOT NULL;
+
+-- ANSI 구문 (정답)
+SELECT EMP_NAME  AS "사원명", 
+       JOB_NAME  AS "직급명", 
+       DEPT_TITLE  AS "부서명", 
+       LOCAL_NAME  AS "근무 지역"
+FROM EMPLOYEE E
+JOIN JOB J ON(E.JOB_CODE = J.JOB_CODE)
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+JOIN LOCATION L ON(D.LOCATION_ID = L.LOCAL_CODE);
+
+-- 결과동일
 
 -- 10. 해외영업팀에 근무하는 직원들의 사원명, 직급명, 부서 코드, 부서명을 조회하시오
-SELECT 
-    E.EMP_NAME AS 사원명
-    , J.JOB_NAME AS 직급명
-    , E.DEPT_CODE AS 부서코드
-    , D.DEPT_TITLE AS 부서명
+
+SELECT
+    E.EMP_NAME   AS 사원명,
+    J.JOB_NAME   AS 직급명,
+    E.DEPT_CODE  AS 부서코드,
+    D.DEPT_TITLE AS 부서명
+FROM
+         EMPLOYEE E
+    JOIN JOB        J ON E.JOB_CODE = J.JOB_CODE
+    JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+WHERE
+    D.DEPT_TITLE = '해외영업팀';
+
+-- ANSI 구문 (정답)
+SELECT E.EMP_NAME AS "사원명", 
+       J.JOB_NAME AS "직급명", 
+       E.DEPT_CODE AS "부서 코드", 
+       D.DEPT_TITLE AS "부서명"
 FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
-JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
-WHERE D.DEPT_TITLE = '해외영업팀';
+JOIN JOB J ON (E.JOB_CODE = J.JOB_CODE)
+JOIN DEPARTMENT D ON(E.DEPT_CODE = D.DEPT_ID)
+WHERE D.DEPT_TITLE LIKE '해외영업%'
+ORDER BY E.EMP_NAME;
 
+-- 결과 다름
 
+-- 11. 이름에 '형'자가 들어있는 직원들의 사번, 사원명, 직급명을 조회하시오. 
 
--- 11. 이름에 '형'자가 들어있는 직원들의 사번, 사원명, 직급명을 조회하시오.
-SELECT 
-    E.EMP_NO 사번
-    , E.EMP_NAME 사원명
-    , J.JOB_NAME 직급명
+SELECT
+    E.EMP_ID   사번,
+    E.EMP_NAME 사원명,
+    J.JOB_NAME 직급명
+FROM
+         EMPLOYEE E
+    JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+WHERE
+    E.EMP_NAME LIKE '%형%';
+    
+    -- ANSI 구문 (정답)
+SELECT E.EMP_ID AS "사번",
+       E.EMP_NAME AS "사원명",
+       J.JOB_NAME AS "직급명"
 FROM EMPLOYEE E
-JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+JOIN JOB J ON(E.JOB_CODE = J.JOB_CODE)
 WHERE E.EMP_NAME LIKE '%형%';
+
+-- 결과동일
+
+
+----- JOIN sql문 60%
 

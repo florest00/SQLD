@@ -220,3 +220,5 @@ SELECT * FROM GRADE;
 
 DELETE FROM STUDENT
 WHERE STUDENT_NUM = 2;
+
+-- 과제는 없고.... 만들어보고 싶은거 만들기..!
